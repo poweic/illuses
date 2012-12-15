@@ -4,45 +4,46 @@
 	<title> ILLUSES </title>
 	<script src="vendor/jquery-latest.js"></script>
 	<script src="vendor/jquery-ui.js"></script>
+	<script src="FileSaver.js"></script>
+	<script src="BlobBuilder.js"></script>
 	<link type="text/css" rel="stylesheet" href="css/slide.css">
 	<link type="text/css" rel="stylesheet" href="css/basic.css">
 	<script src="js/illuses.js"></script>
   </head>
   
   <body>
+  	<div id="control_panel" style="position:absolute; top: 50px; left: 50px">
+		<table>
+			<tr>
+				<td>
+					<button onClick="saveFile()">Save</button>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+			<tr>
+				<td>			
+					<button onClick="loadFile('file:///C:/Users/Boton/Documents/GitHub/illuses/new-slide.xhtml')">Load</button>
+				</td>
+			</tr>
+		</table>
+	</div>
 	<div class="stage" id="stage">
+		<div class="stage-padding">&nbsp;</div>
+		<span class="stage-padding">&nbsp</span>
+		
+		<span id="front-stage">
 
+		</span>
+		
+		<span class="stage-padding">&nbsp</span>
+		<div class="stage-padding">&nbsp;</div>
 	</div>
-	<div id="control_panel" style="position:absolute; top:0px; left:0px;">
-		<button onClick="save()">Save</button>
-		<button onClick="load()">Load</button>
-	</div>
+
 	
 	<div id="original_template" style="display: none">
-		<div class="stage-padding">&nbsp;</div><span class="stage-padding">&nbsp</span>
-		
-		<div class="slide" id="slide0" contenteditable>
-			<h1>Slide 1</h1>
-			<section class="content">
-				<p>content goes here...</p>
-			</section>
-		</div>
-		
-		<div class="slide present" id="slide1" contenteditable>
-			<h1>Slide 2</h1>
-			<section class="content">
-				<p>content goes here...</p>
-			</section>
-		</div>
-		
-		<div class="slide" id="slide2" contenteditable>
-			<h1>Slide 3</h1>
-			<section class="content">
-				<p>content goes here...</p>
-			</section>
-		</div>
-		
-		<span class="stage-padding">&nbsp</span><div class="stage-padding">&nbsp;</div>
+
 	</div>
   </body>
 </html>

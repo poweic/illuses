@@ -37,7 +37,6 @@ function next() {
 }
 
 function prev() {
-
 	current = (current + 2) % 3;
 }
 
@@ -52,110 +51,36 @@ $(window).resize(function(){
 $(function() {
 	resizeStage();
 	window.onkeydown = keyDownHandler;
-	initFs();
 });
 
-function errorHandler(e) {
-  var msg = '';
+var isSaved = true;
 
-  switch (e.code) {
-    case FileError.QUOTA_EXCEEDED_ERR:
-      msg = 'QUOTA_EXCEEDED_ERR';
-      break;
-    case FileError.NOT_FOUND_ERR:
-      msg = 'NOT_FOUND_ERR';
-      break;
-    case FileError.SECURITY_ERR:
-      msg = 'SECURITY_ERR';
-      break;
-    case FileError.INVALID_MODIFICATION_ERR:
-      msg = 'INVALID_MODIFICATION_ERR';
-      break;
-    case FileError.INVALID_STATE_ERR:
-      msg = 'INVALID_STATE_ERR';
-      break;
-    default:
-      msg = 'Unknown Error';
-      break;
-  };
+/*window.onbeforeunload = function (e) {
+	return 'Are you sure?';
+};*/
 
-  console.log('Error: ' + msg);
+function loadFile(filename) {
+	$("#front-stage").empty();
+	jQuery.get(filename, { "_": $.now() }, function(data){
+		//console.log('File: ' + filename + " loaded completely!");
+		
+		var dom = $('<div>').html(data);
+		var content = $("span#front-stage", dom).html();
+		$("#front-stage").append(content);
+		
+		$(".slide").removeClass("present");
+		$("#slide0").addClass("present");
+	});
+	
 }
 
-const fileName = 'log.txt';
-const REQUESTING_QUOTA = 1024*1024;
-var fs = null;
-window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-
-function initFs() {
+function saveFile() {
+	var bb = new BlobBuilder();
+	// bb.append("test msg");
+	bb.append((new XMLSerializer).serializeToString(document));
+	var blob = bb.getBlob("application/xhtml+xml;charset=" + document.characterSet);
+	saveAs(blob, "new-slide.xhtml");
 	
-	window.webkitStorageInfo.requestQuota(
-		PERSISTENT,
-		REQUESTING_QUOTA,
-		function(grantedBytes) {
-			window.requestFileSystem(
-				PERSISTENT,
-				grantedBytes,
-				function(fileSystem) {
-					fs = fileSystem;
-					load();
-				},
-				errorHandler);
-		},
-		function(e) {
-			console.log('Error', e);
-		});
-}
-
-function save() {
-  fs.root.getFile(fileName, {create: true}, function(fileEntry) {
-  
-    fileEntry.createWriter(function(fileWriter) {
-
-      fileWriter.onwriteend = function(e) {
-        console.log('Write completed.');
-      };
-
-      fileWriter.onerror = function(e) {
-        console.log('Write failed: ' + e.toString());
-      };
-	  
-	  var dataToBeWrite = $("#stage").html();
-	  console.log("dataToBeWrite = " + dataToBeWrite);
-      var blob = new Blob([dataToBeWrite], {type: 'text/plain'});
-      fileWriter.write(blob);
-    }, errorHandler);
-	
-  }, errorHandler);
-};
-
-function load() {
-	fs.root.getFile(fileName, {}, function(fileEntry) {
-
-    // Get a File object representing the file,
-    // then use FileReader to read its contents.
-    fileEntry.file(function(file) {
-		var reader = new FileReader();
-
-		reader.onloadend = function(e) {
-			console.log("this.result = " + this.result);
-			$("#stage").append(this.result);
-			$(".slide").removeClass("present");
-			$("#slide0").addClass("present");
-		};
-
-       reader.readAsText(file);
-    }, errorHandler);
-
-  }, errorHandler);
-};
-
-function remove() {
-	fs.root.getFile('log.txt', {create: false}, function(fileEntry) {
-
-		fileEntry.remove(function() {
-		  console.log('File removed.');
-		}, errorHandler);
-
-	}, errorHandler);
+	var date = new Date();
+	console.log(date.getMonth() + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + " Saved");
 }

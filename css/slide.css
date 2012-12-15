@@ -4,6 +4,21 @@
 	min-height: 100%;
 }
 
+#control_panel {
+	z-index: 1;
+}
+
+button {
+	border: 1px solid black;
+	background-color: #BAF3F4;
+	font: 24px Comic Sans MS Bold;
+	border-radius: 4px;
+}
+
+button:hover {
+	background-color: #87EAEB;
+}
+
 h1 {
 	font-size: 60px;
 	font-weight: bold;
@@ -17,6 +32,7 @@ h1 {
 	min-height: 60%;
 	display: inline-block;
 	border: 1px dashed black;
+	border-radius: 5px;
 }
 
 .present {
