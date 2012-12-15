@@ -4,16 +4,20 @@
 	<title> ILLUSES </title>
 	<script src="vendor/jquery-latest.js"></script>
 	<script src="vendor/jquery-ui.js"></script>
-	<script src="FileSaver.js"></script>
-	<script src="BlobBuilder.js"></script>
+	<script src="vendor/FileSaver.js"></script>
+	<script src="vendor/BlobBuilder.js"></script>
+	<script src="vendor/sprintf-0.7-beta1.js"></script>
+	
 	<link type="text/css" rel="stylesheet" href="css/slide.css">
 	<link type="text/css" rel="stylesheet" href="css/basic.css">
 	<script src="js/illuses.js"></script>
   </head>
   
   <body>
-  	<div id="control_panel" style="position:absolute; top: 50px; left: 50px">
-		<table>
+
+	<div id="back-stage">
+	  	<div id="control_panel">
+		<table align="center">
 			<tr>
 				<td>
 					<button onClick="saveFile()">Save</button>
@@ -28,8 +32,8 @@
 				</td>
 			</tr>
 		</table>
-	</div>
-	<div class="stage" id="stage">
+		</div>
+		
 		<div class="stage-padding">&nbsp;</div>
 		<span class="stage-padding">&nbsp</span>
 		
@@ -39,11 +43,8 @@
 		
 		<span class="stage-padding">&nbsp</span>
 		<div class="stage-padding">&nbsp;</div>
+		<div id="navigation"></div>
 	</div>
-
 	
-	<div id="original_template" style="display: none">
-
-	</div>
   </body>
 </html>

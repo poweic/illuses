@@ -2,7 +2,7 @@ function keyDownHandler(event) {
 	if(isFocusOnSlides())
 		return;
 	
-	$("#slide" + current).removeClass("present");
+	$("#slide-" + current).removeClass("present");
 	
 	console.log(event.which);
 	switch(event.which) {
@@ -21,16 +21,17 @@ function keyDownHandler(event) {
 			break;
 	}
 	
-	$("#slide" + current).addClass("present");
-	
-		
+	$("#slide-" + current).addClass("present");
+
 };
 
 function isFocusOnSlides() {
 	var aNode = window.getSelection().anchorNode;
 	return aNode != null && aNode.parentNode.getAttribute("class") != "stage-padding";
 }
+
 var current = 0;
+var nSlides = 0;
 
 function next() {
 	current = (current + 1) % 3;
@@ -41,7 +42,7 @@ function prev() {
 }
 
 function resizeStage() {
-	$(".stage").css("width", window.innerWidth).css("height", window.innerHeight);
+	$("#back-stage").css("width", window.innerWidth).css("height", window.innerHeight);
 }
 
 $(window).resize(function(){
@@ -69,9 +70,21 @@ function loadFile(filename) {
 		$("#front-stage").append(content);
 		
 		$(".slide").removeClass("present");
-		$("#slide0").addClass("present");
+		$("#slide-0").addClass("present");
+		
+		nSlides = $("span#front-stage > div.slide").length;
+		console.log("There're " + nSlides + " slides in total");
+		createMiniatureInNavigation();
 	});
-	
+}
+
+function createMiniatureInNavigation() {
+	var miniature = new Array(nSlides);
+	for(var i=0; i<nSlides; ++i) {
+		var span = sprintf("<span class='mini-slide' id='mini-slide-%d'>%s</span>", i, $("div#slide-" + i).html());
+		$("#navigation").append(span);
+		$("#mini-slide-" + i).css("left", 10*i + '%');
+	}
 }
 
 function saveFile() {
